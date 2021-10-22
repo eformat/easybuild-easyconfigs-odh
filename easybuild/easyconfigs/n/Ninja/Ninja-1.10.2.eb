@@ -1,0 +1,30 @@
+easyblock = 'CmdCp'
+
+name = 'Ninja'
+version = '1.10.2'
+
+homepage = 'https://ninja-build.org/'
+description = "Ninja is a small build system with a focus on speed."
+
+toolchain = SYSTEM
+
+source_urls = ['https://github.com/ninja-build/ninja/archive/']
+sources = ['v%(version)s.tar.gz']
+
+builddependencies = [
+#    ('binutils', '2.35'),
+    ('Python', '3.8.12'),
+]
+
+cmds_map = [('.*', "./configure.py --bootstrap")]
+
+files_to_copy = [(['ninja'], 'bin')]
+
+sanity_check_paths = {
+    'files': ['bin/ninja'],
+    'dirs': [],
+}
+
+sanity_check_commands = ["ninja --version"]
+
+moduleclass = 'tools'
