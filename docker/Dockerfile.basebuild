@@ -1,4 +1,0 @@
-FROM registry.fedoraproject.org/fedora-minimal:34
-RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel \
-    && microdnf clean all
-RUN mkdir -p /opt/apps/easybuild
