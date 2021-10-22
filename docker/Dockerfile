@@ -21,7 +21,7 @@ WORKDIR /opt/app-root/src
 
 # an annoying patch for easybuild untar cmds for deps in containers
 COPY eb-patch /tmp/eb-patch
-RUN patch -p0 < /tmp/eb-patch
+RUN (cd / && patch -p0) < /tmp/eb-patch
 
 # Multi-stage-build
 FROM builder as tf-python-3.8-gcc
