@@ -148,7 +148,7 @@ exts_list = [
     ('keras', version, {
         'source_tmpl': SOURCE_WHL,
         'checksums': ['504af5656a9829fe803ce48a8580ef16916e89906aceddad9e098614269437e7'],
-    })
+    }),
 ]
 
 moduleclass = 'lib'
