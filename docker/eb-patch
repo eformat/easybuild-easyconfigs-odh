@@ -1,0 +1,13 @@
+--- /opt/apps/easybuild/lib/python3.9/site-packages/easybuild/tools/filetools.py	2021-10-22 16:42:34.300550817 +1000
++++ /opt/apps/easybuild/lib/python3.9/site-packages/easybuild/tools/filetools.py	2021-10-22 16:43:20.459456679 +1000
+@@ -134,8 +134,8 @@
+     # gzipped or gzipped tarball
+     '.gtgz': "tar xzf %(filepath)s",
+     '.gz': "gunzip -c %(filepath)s > %(target)s",
+-    '.tar.gz': "tar xzf %(filepath)s",
+-    '.tgz': "tar xzf %(filepath)s",
++    '.tar.gz': "tar --no-same-owner -xzf %(filepath)s",
++    '.tgz': "tar --no-same-owner -xzf %(filepath)s",
+     # bzipped or bzipped tarball
+     '.bz2': "bunzip2 -c %(filepath)s > %(target)s",
+     '.tar.bz2': "tar xjf %(filepath)s",

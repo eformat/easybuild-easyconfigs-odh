@@ -149,6 +149,11 @@ exts_list = [
         'source_tmpl': SOURCE_WHL,
         'checksums': ['504af5656a9829fe803ce48a8580ef16916e89906aceddad9e098614269437e7'],
     }),
+    (name, version, {
+        'source_tmpl': 'v%(version)s.tar.gz',
+        'source_urls': ['https://github.com/tensorflow/tensorflow/archive/'],
+        'with_xla': True,
+    }),
 ]
 
 moduleclass = 'lib'

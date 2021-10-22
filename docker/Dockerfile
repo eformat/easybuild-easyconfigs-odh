@@ -1,6 +1,6 @@
 FROM registry.fedoraproject.org/fedora-minimal:34 as builder
 # GCC Toolchain is SYSTEM for eb for now
-RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi \
+RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel \
     && microdnf clean all
 RUN mkdir -p /opt/apps/easybuild
 
@@ -18,6 +18,10 @@ ENV PYTHONPATH="/opt/apps/easybuild/lib/python3.9/site-packages:${PYTHONPATH}"
 ENV XDG_CONFIG_DIRS="/opt/apps/easybuild"
 
 WORKDIR /opt/app-root/src
+
+# an annoying patch for easybuild untar cmds for deps in containers
+COPY eb-patch /tmp/eb-patch
+RUN patch -p0 < /tmp/eb-patch
 
 # Multi-stage-build
 FROM builder as tf-python-3.8-gcc
