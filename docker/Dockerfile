@@ -23,8 +23,27 @@ WORKDIR /opt/app-root/src
 COPY eb-patch /tmp/eb-patch
 RUN (cd / && patch -p0) < /tmp/eb-patch
 
-# Multi-stage-build
-FROM builder as tf-python-3.8-gcc
+# setup lmod
+COPY lmod-env.sh /tmp/lmod-env.sh
+RUN bash -c '/tmp/lmod-env.sh'
+
+#
+# Multi-stage-builds
+#
+
+# Copy in our ODH configs
+FROM builder as odh-builder
 RUN git clone https://github.com/eformat/easybuild-easyconfigs-odh.git
 WORKDIR /opt/app-root/src/easybuild-easyconfigs-odh
+
+# Python
+FROM odh-builder as python-3.8-gcc
+RUN eb Python-3.8.12.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easyconfigs-odh --installpath=/opt/apps/easybuild --allow-use-as-root-and-accept-consequences
+RUN mkdir -p /opt/apps/easybuild/modules/featured/Python
+RUN cp /opt/apps/easybuild/modules/all/Python/3.8.12.lua /opt/apps/easybuild/modules/featured/Python/
+
+# Tensorflow
+FROM python-3.8-gcc as tf-python-3.8-gcc
 RUN eb TensorFlow-2.6.0-python3.8.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easyconfigs-odh --installpath=/opt/apps/easybuild --allow-use-as-root-and-accept-consequences
+RUN mkdir -p /opt/apps/easybuild/modules/featured/TensorFlow
+RUN cp /opt/apps/easybuild/modules/all/TensorFlow/2.6.0.lua /opt/apps/easybuild/modules/featured/TensorFlow
