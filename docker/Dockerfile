@@ -1,6 +1,6 @@
 FROM registry.fedoraproject.org/fedora-minimal:34 as builder
 # GCC Toolchain is SYSTEM for eb for now
-RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel \
+RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel rsync \
     && microdnf clean all
 RUN mkdir -p /opt/apps/easybuild
 

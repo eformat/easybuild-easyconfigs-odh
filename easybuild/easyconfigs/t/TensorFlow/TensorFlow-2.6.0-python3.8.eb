@@ -36,6 +36,7 @@ dependencies = [
     ('flatbuffers-python', '2.0'),
     ('typing-extensions', '3.10.0.0'),
     ('libpng', '1.6.37'),
+    ('libarchive','3.5.1'),
     ('snappy', '1.1.8'),
     ('zlib', '1.2.11'),
 ]
@@ -148,6 +149,14 @@ exts_list = [
     ('keras', version, {
         'source_tmpl': SOURCE_WHL,
         'checksums': ['504af5656a9829fe803ce48a8580ef16916e89906aceddad9e098614269437e7'],
+    }),
+    (name, version, {
+        'source_tmpl': 'v%(version)s.tar.gz',
+        'source_urls': ['https://github.com/tensorflow/tensorflow/archive/'],
+        'patches': [
+            'TensorFlow-2.6.0_add-default-shell-env.patch',
+            'TensorFlow-2.6.0_downgrade-required-versions.patch',
+        ],
     })
 ]
 
