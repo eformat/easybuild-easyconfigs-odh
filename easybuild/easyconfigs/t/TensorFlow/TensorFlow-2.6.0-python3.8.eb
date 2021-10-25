@@ -157,6 +157,25 @@ exts_list = [
             'TensorFlow-2.6.0_add-default-shell-env.patch',
             'TensorFlow-2.6.0_downgrade-required-versions.patch',
         ],
+        'test_script': 'TensorFlow-2.x_mnist-test.py',
+        'test_tag_filters_cpu': '-gpu,-tpu,-no_cuda_on_cpu_tap,-no_pip,-no_oss,-oss_serial,-benchmark-test,-v1only',
+        'test_targets': [
+            '//tensorflow/core/...',
+            '-//tensorflow/core:example_java_proto',
+            '-//tensorflow/core/example:example_protos_closure',
+            '//tensorflow/cc/...',
+            '//tensorflow/c/...',
+            '//tensorflow/python/...',
+            # Fails on some nodes but C API isn't installed anyway
+            '-//tensorflow/c/eager:c_api_distributed_test',
+            # Fails to open its own test.xml(?)
+            '-//tensorflow/core/common_runtime:collective_param_resolver_local_test',
+            # Fails on non-AVX-512 systems: https://github.com/tensorflow/tensorflow/issues/46532
+            '-//tensorflow/core/common_runtime:mkl_layout_pass_test',
+            '-//tensorflow/core/kernels/mkl:mkl_fused_ops_test',
+        ],
+        'testopts': "--test_timeout=3600 --test_size_filters=small",
+        'with_xla': True,
     })
 ]
 
