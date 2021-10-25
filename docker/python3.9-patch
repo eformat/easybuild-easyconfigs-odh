@@ -1,0 +1,20 @@
+--- /usr/lib64/python3.9/os.py.orig	2021-10-25 19:58:25.929990237 +1000
++++ /usr/lib64/python3.9/os.py	2021-10-25 19:59:17.719052226 +1000
+@@ -738,6 +738,8 @@
+     if name == 'nt':
+         # Where Env Var Names Must Be UPPERCASE
+         def check_str(value):
++            if value is None:
++                return ""
+             if not isinstance(value, str):
+                 raise TypeError("str expected, not %s" % type(value).__name__)
+             return value
+@@ -752,6 +754,8 @@
+         # Where Env Var Names Can Be Mixed Case
+         encoding = sys.getfilesystemencoding()
+         def encode(value):
++            if value is None:
++                return ""
+             if not isinstance(value, str):
+                 raise TypeError("str expected, not %s" % type(value).__name__)
+             return value.encode(encoding, 'surrogateescape')

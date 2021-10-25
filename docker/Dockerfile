@@ -1,7 +1,7 @@
-FROM registry.fedoraproject.org/fedora-minimal:34 as builder
+FROM registry.fedoraproject.org/fedora:34 as builder
 # GCC Toolchain is SYSTEM for eb for now
-RUN microdnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel rsync \
-    && microdnf clean all
+RUN dnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel rsync python3-pip \
+    && dnf clean all
 RUN mkdir -p /opt/apps/easybuild
 
 # Install EasyBuild
@@ -41,9 +41,21 @@ FROM odh-builder as python-3.8-gcc
 RUN eb Python-3.8.12.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easyconfigs-odh --installpath=/opt/apps/easybuild --allow-use-as-root-and-accept-consequences
 RUN mkdir -p /opt/apps/easybuild/modules/featured/Python
 RUN cp /opt/apps/easybuild/modules/all/Python/3.8.12.lua /opt/apps/easybuild/modules/featured/Python/
+# fixme Scipy for now - bundle needs intel compilers
+RUN bash -c 'source /etc/profile; module load Python/3.8.12; pip install numpy scipy matplotlib ipython pandas sympy'
 
 # Tensorflow
 FROM python-3.8-gcc as tf-python-3.8-gcc
+# fixme bazel support needed to build tensorflow wheel
+RUN dnf install -y dnf-plugins-core
+RUN dnf copr enable -y vbatts/bazel
+RUN dnf install -y bazel3 \
+    && dnf clean all
+# an annoying patch for easybuild python3.9 bazel/tflow
+COPY python3.9-patch /tmp/python3.9-patch
+RUN (cd / && patch -p0) < /tmp/python3.9-patch
+# tflow
+RUN curl -fLo /usr/bin/bazel-3.7.2-linux-x86_64 https://releases.bazel.build/3.7.2/release/bazel-3.7.2-linux-x86_64 && chmod +x /usr/bin/bazel-3.7.2-linux-x86_64
 RUN eb TensorFlow-2.6.0-python3.8.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easyconfigs-odh --installpath=/opt/apps/easybuild --allow-use-as-root-and-accept-consequences
 RUN mkdir -p /opt/apps/easybuild/modules/featured/TensorFlow
 RUN cp /opt/apps/easybuild/modules/all/TensorFlow/2.6.0.lua /opt/apps/easybuild/modules/featured/TensorFlow

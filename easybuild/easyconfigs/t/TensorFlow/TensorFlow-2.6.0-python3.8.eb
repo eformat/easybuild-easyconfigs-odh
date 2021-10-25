@@ -156,6 +156,7 @@ exts_list = [
         'patches': [
             'TensorFlow-2.6.0_add-default-shell-env.patch',
             'TensorFlow-2.6.0_downgrade-required-versions.patch',
+            'TensorFlow-2.6.0_error-message.patch',
         ],
         'test_script': 'TensorFlow-2.x_mnist-test.py',
         'test_tag_filters_cpu': '-gpu,-tpu,-no_cuda_on_cpu_tap,-no_pip,-no_oss,-oss_serial,-benchmark-test,-v1only',
