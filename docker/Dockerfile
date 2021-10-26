@@ -51,11 +51,11 @@ RUN dnf install -y dnf-plugins-core
 RUN dnf copr enable -y vbatts/bazel
 RUN dnf install -y bazel3 \
     && dnf clean all
+RUN curl -fLo /usr/bin/bazel-3.7.2-linux-x86_64 https://releases.bazel.build/3.7.2/release/bazel-3.7.2-linux-x86_64 && chmod +x /usr/bin/bazel-3.7.2-linux-x86_64
 # an annoying patch for easybuild python3.9 bazel/tflow
 COPY python3.9-patch /tmp/python3.9-patch
 RUN (cd / && patch -p0) < /tmp/python3.9-patch
 # tflow
-RUN curl -fLo /usr/bin/bazel-3.7.2-linux-x86_64 https://releases.bazel.build/3.7.2/release/bazel-3.7.2-linux-x86_64 && chmod +x /usr/bin/bazel-3.7.2-linux-x86_64
 RUN eb TensorFlow-2.6.0-python3.8.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easyconfigs-odh --installpath=/opt/apps/easybuild --allow-use-as-root-and-accept-consequences
 RUN mkdir -p /opt/apps/easybuild/modules/featured/TensorFlow
 RUN cp /opt/apps/easybuild/modules/all/TensorFlow/2.6.0.lua /opt/apps/easybuild/modules/featured/TensorFlow
