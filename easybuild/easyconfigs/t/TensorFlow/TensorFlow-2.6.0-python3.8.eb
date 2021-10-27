@@ -158,11 +158,6 @@ exts_list = [
             'TensorFlow-2.6.0_downgrade-required-versions.patch',
             'TensorFlow-2.6.0_error-message.patch',
         ],
-        'test_script': 'TensorFlow-2.x_mnist-test.py',
-        'test_tag_filters_cpu': '-gpu,-tpu,-no_cuda_on_cpu_tap,-no_pip,-no_oss,-oss_serial,-benchmark-test,-v1only',
-        'test_targets': [
-            '//tensorflow/core/...',
-        ],
         'testopts': "--test_timeout=3600 --test_size_filters=small",
         'with_xla': True,
     })
