@@ -1,6 +1,6 @@
 FROM registry.fedoraproject.org/fedora:34 as builder
 # GCC Toolchain is SYSTEM for eb for now
-RUN dnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel xz libffi-devel vi bzip2-devel rsync python3-pip \
+RUN dnf install -y make cmake binutils gcc gcc-c++ libstdc++ libstdc++-devel curl git tar xterm perl zlib zlib-devel pkgconf-pkg-config libpng libpng-devel lua Lmod which bzip2 patch diffutils openssl-devel libffi-devel vi bzip2-devel rsync python3-pip xz-lzma-compat lzma-devel \
     && dnf clean all
 RUN mkdir -p /opt/apps/easybuild
 
@@ -42,7 +42,7 @@ RUN eb Python-3.8.12.eb -rfTl --search-paths=/opt/app-root/src/easybuild-easycon
 RUN mkdir -p /opt/apps/easybuild/modules/featured/Python
 RUN cp /opt/apps/easybuild/modules/all/Python/3.8.12.lua /opt/apps/easybuild/modules/featured/Python/
 # fixme Scipy for now - bundle needs intel compilers
-RUN bash -c 'source /etc/profile; module load Python/3.8.12; pip install numpy scipy matplotlib ipython pandas sympy'
+RUN bash -c 'source /etc/profile; module load Python/3.8.12; pip install numpy scipy matplotlib ipython pandas sympy absl-py ipykernel'
 
 # Tensorflow
 FROM python-3.8-gcc as tf-python-3.8-gcc

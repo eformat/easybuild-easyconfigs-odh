@@ -16,7 +16,7 @@ builddependencies = [('binutils', '2.37')]
 
 dependencies = [
     ('Python', '3.8.12'),
-#    ('protobuf', version)
+    ('protobuf', '3.17.3'),
 ]
 
 download_dep_fail = True

@@ -18,3 +18,23 @@
              if not isinstance(value, str):
                  raise TypeError("str expected, not %s" % type(value).__name__)
              return value.encode(encoding, 'surrogateescape')
+@@ -760,6 +760,8 @@
+                 raise TypeError("str expected, not %s" % type(value).__name__)
+             return value.encode(encoding, 'surrogateescape')
+         def decode(value):
++            if isinstance(value, str):
++                return value
+             return value.decode(encoding, 'surrogateescape')
+         encodekey = encode
+         data = environ
+--- /opt/apps/easybuild/lib/python3.9/site-packages/easybuild/framework/easyblock.py.orig	2021-10-28 06:40:08.236408211 +0000
++++ /opt/apps/easybuild/lib/python3.9/site-packages/easybuild/framework/easyblock.py	2021-10-28 06:43:12.840091498 +0000
+@@ -1111,7 +1111,7 @@
+         for (key, val) in env.get_changes().items():
+             # check if non-empty string
+             # TODO: add unset for empty vars?
+-            if val.strip():
++            if val is not None and val.strip():
+                 env_lines.append(self.module_generator.set_environment(key, val))
+ 
+         if create_in_builddir:
